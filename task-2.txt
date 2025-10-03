@@ -1,4 +1,84 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No:250542008
+AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Algoritma Seçimi:Sudoku çözme yaklaşımı
+
+ALGORITMA GelismisSudokuCoz
+
+GİRİŞ:
+    sudoku ← 9x9 matris (boş hücreler 0 ile gösterilir)
+    zorunlu_hucreler ← kullanıcıdan_al() // [(i, j), ...]
+
+İŞLEM:
+
+1. domain ← Her hücre için [1..9] olarak başlat
+2. domain’i başlangıç sudoku durumuna göre güncelle:
+       Her dolu hücre için:
+           Etki alanındaki satır, sütun, kutudan ilgili sayı silinsin
+
+3. boş_hucreler ← sudoku’daki tüm (i, j) hücreleri:
+       eğer sudoku[i][j] == 0 ise ekle
+
+4. zorunlu_hucreler ← kullanıcıdan veya sistemden gelen liste
+5. istege_bagli_hucreler ← boş_hucreler - zorunlu_hucreler
+
+6. hücre_listesi ← zorunlu_hucreler + istege_bagli_hucreler
+
+7. Çözüm başlat:
+       eğer CozRecursive(sudoku, domain, hücre_listesi) = TRUE:
+           sudoku_yazdir(sudoku)
+       değilse:
+           yazdır("Çözüm bulunamadı.")
+
+FONKSIYON CozRecursive(sudoku, domain, hücre_listesi):
+
+    Eğer tüm hücreler doldurulduysa:
+        dönüş TRUE
+
+    // Minimum olasılıklı hücre seçimi (MRV)
+    hücre ← MinimumDomainHücre(hücre_listesi, domain)
+
+    (i, j) ← hücre
+    olasi_sayilar ← domain[i][j]
+
+    Her sayı için olasi_sayilar içinde tekrar et:
+        eğer RakamGecerliMi(sudoku, i, j, sayı):
+            sudoku[i][j] ← sayı
+
+            domain_kopya ← domain’in derin kopyası
+            domain’i güncelle: satır, sütun ve 3x3 kutuda sayı’yı çıkar
+
+            yeni_hucre_listesi ← hücre_listesi - [(i, j)]
+
+            Eğer CozRecursive(sudoku, domain, yeni_hucre_listesi):
+                dönüş TRUE
+
+            // Geri alma
+            sudoku[i][j] ← 0
+            domain ← domain_kopya
+
+    dönüş FALSE
+
+FONKSIYON RakamGecerliMi(sudoku, i, j, sayı):
+    Eğer sayı aynı satırda varsa → FALSE
+    Eğer sayı aynı sütunda varsa → FALSE
+    Eğer sayı aynı 3x3 kutuda varsa → FALSE
+    Aksi halde → TRUE
+
+FONKSIYON MinimumDomainHücre(hücre_listesi, domain):
+    minimum ← ∞
+    secilen ← NULL
+    her (i,j) için hücre_listesi içinde:
+        eğer sudoku[i][j] == 0 ve domain[i][j].uzunluk < minimum:
+            minimum ← domain[i][j].uzunluk
+            secilen ← (i, j)
+    dönüş secilen
+
+FONKSIYON sudoku_yazdir(sudoku):
+    her satır için sudoku:
+        yazdır satır
+
+SON
+
