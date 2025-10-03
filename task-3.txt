@@ -1,4 +1,80 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No:250542008
+AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Algoritma Seçimi:Sınıf notlarını en yüksekten en düşüğe sıralama
+
+ALGORITMA SiraliNotListesiZorunluIstegeBagli
+
+GİRİŞ:
+    ogrenci_listesi ← [
+        (isim, not, durum)
+        // durum: "zorunlu" veya "istege_bagli"
+        // örnek: ("Ayşe", 85, "zorunlu")
+    ]
+
+DEĞİŞKENLER:
+    gecersiz_notlar ← boş liste
+    gecerli_ogrenciler ← boş liste
+    zorunlu_ogrenciler ← boş liste
+    istege_bagli_ogrenciler ← boş liste
+
+İŞLEM:
+
+1. VERİ DOĞRULAMA:
+    Her öğrenci için ogrenci_listesi içinde:
+        (isim, not, durum) ← öğrenci
+
+        Eğer not bir sayı değilse veya not < 0 veya not > 100 ise:
+            gecersiz_notlar listesine (isim, not) ekle
+            yazdır("❌ Geçersiz not: ", isim, "-", not)
+            devam et
+
+        Eğer durum ≠ "zorunlu" VE ≠ "istege_bagli" ise:
+            yazdır("⚠️ Uyarı: Tanımsız durum, 'istege_bagli' olarak işaretlendi →", isim)
+            durum ← "istege_bagli"
+
+        gecerli_ogrenciler listesine (isim, not, durum) ekle
+
+2. SINIFLANDIRMA:
+    Her öğrenci için gecerli_ogrenciler içinde:
+        Eğer durum = "zorunlu":
+            zorunlu_ogrenciler listesine ekle
+        Değilse:
+            istege_bagli_ogrenciler listesine ekle
+
+3. SIRALAMA:
+    Sıralama kuralı:
+        - Önce nota göre AZALAN
+        - Eşit notlarda isme göre ARTAN
+
+    sıralı_zorunlu ← zorunlu_ogrenciler’i yukarıdaki kurala göre sırala
+    sıralı_istege_bagli ← istege_bagli_ogrenciler’i aynı kurala göre sırala
+
+4. LİSTEYİ BİRLEŞTİR:
+    final_liste ← sıralı_zorunlu + sıralı_istege_bagli
+
+5. ÇIKTI ÜRET:
+    yazdır("📋 Sıralanmış Not Listesi (Zorunlu öğrenciler üstte):")
+    yazdır("------------------------------------------------------")
+
+    sıra ← 1
+    her öğrenci için final_liste içinde:
+        (isim, not, durum) ← öğrenci
+        yazdır(sıra, ") ", isim, " | Not:", not, "| Durum:", durum)
+        sıra ← sıra + 1
+
+6. ÖZET RAPOR:
+    yazdır("------------------------------------------------------")
+    yazdır("✅ Toplam öğrenci:", uzunluk(final_liste))
+    yazdır("📌 Zorunlu öğrenciler:", uzunluk(sıralı_zorunlu))
+    yazdır("📎 İsteğe bağlı öğrenciler:", uzunluk(sıralı_istege_bagli))
+    yazdır("🚫 Geçersiz veriler:", uzunluk(gecersiz_notlar))
+
+    Eğer uzunluk(gecersiz_notlar) > 0 ise:
+        yazdır("⛔ Atlanan öğrenciler:")
+        her (isim, not) için gecersiz_notlar içinde:
+            yazdır("-", isim, "(not:", not, ")")
+
+SON
