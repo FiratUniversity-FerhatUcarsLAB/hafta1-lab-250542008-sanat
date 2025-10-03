@@ -1,4 +1,84 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No:250542008
+AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Algoritma Seiçimi:Gün içinde zamanı verimli kullanmak için ideal adımlar
+
+ALGORITMA GunlukZamanPlanlama
+
+GIRIS:
+    günlük_tema ← kullanıcıdan alınır (örn: "verimlilik", "denge", "yaratıcılık")
+    toplam_gun_suresi ← dakika cinsinden alınır (örn: 600 dk = 10 saat)
+
+    görev_listesi ← [
+        (görev_adı, süre_dk, öncelik, tür, zaman_aralığı)
+        // tür: "zorunlu", "isteğe_bagli", "dengeleyici"
+        // zaman_aralığı: (başlangıç_saat, bitiş_saat) → opsiyonel
+    ]
+
+DEGISKENLER:
+    planlanmis_gorevler ← []
+    yer_olmayanlar ← []
+    suanki_sure ← 0   // dakika cinsinden
+
+ISLEMLER:
+
+1. GÖREV DOĞRULAMA:
+    Her görev için görev_listesi:
+        Eğer süre_dk ≤ 0:
+            görev_listesi'nden çıkar
+        Eğer öncelik eksikse → 5 ata
+        Eğer tür eksikse → "isteğe_bagli" ata
+
+2. GÖREV SINIFLANDIRMA:
+    zorunlu ← görev_listesi içinden tür = "zorunlu"
+    dengeleyici ← görev_listesi içinden tür = "dengeleyici"
+    isteğe_bagli ← görev_listesi içinden tür = "isteğe_bagli"
+    tum_gorevler ← zorunlu + dengeleyici + isteğe_bagli
+
+3. GÖREVLERİ SIRALA:
+    tum_gorevler’i sırala:
+        önce tür (zorunlu > dengeleyici > isteğe_bagli)
+        sonra öncelik (küçük → büyük)
+        sonra süre (kısa → uzun)
+
+4. PLAN OLUŞTUR:
+    Her görev için sırayla tum_gorevler:
+        (ad, süre, oncelik, tur, zaman_aralığı) ← görev
+
+        Eğer zaman_aralığı varsa:
+            başlangıç_dk ← zaman_aralığı.başlangıç
+            Eğer suanki_sure < başlangıç_dk:
+                suanki_sure ← başlangıç_dk
+
+        Eğer suanki_sure + süre ≤ toplam_gun_suresi:
+            başlama_saat ← suanki_sure
+            bitis_saat ← suanki_sure + süre
+            planlanmis_gorevler’e (ad, başlama_saat, bitis_saat, tur) ekle
+            suanki_sure ← bitis_saat
+        Aksi:
+            yer_olmayanlar’a görev ekle
+
+5. ÇIKTI:
+    yazdır("🧠 Günlük Tema:", günlük_tema)
+    yazdır("🗓️ Günlük Plan:")
+    Her görev için planlanmis_gorevler:
+        yazdır("- ", görev_adı, "|", saatYaz(başlama), "-", saatYaz(bitiş), "|", tür)
+
+    Eğer yer_olmayanlar boş değilse:
+        yazdır("⚠️ Günlük zamana sığmayan görevler:")
+        Her görev için yer_olmayanlar:
+            yazdır("- ", görev_adı, "(", tür, ", ", süre, "dk )")
+
+    yazdır("⏱️ Kullanılan süre:", suanki_sure, "/", toplam_gun_suresi, "dk")
+    yazdır("🧩 Boş kalan süre:", toplam_gun_suresi - suanki_sure, "dk")
+
+SON
+
+YARDIMCI FONKSIYON:
+Fonksiyon saatYaz(dk):
+    saat ← dk div 60
+    dakika ← dk mod 60
+    Dönüş: saat:dakika (örn: 08:30)
+
