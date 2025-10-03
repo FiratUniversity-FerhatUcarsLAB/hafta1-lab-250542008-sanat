@@ -1,4 +1,99 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No:250542008
+AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Algoritma Seçimi:Lego ile belirli  şekil yapma planı
+
+ALGORITMA LegoYapimPlani
+
+GİRİŞ:
+    hedef_sekil ← kullanıcıdan alınır (örneğin: "Ev", "Araba", "Kule")
+    parca_listesi ← [
+        (ad, renk, boyut, miktar_gerekli, oncelik, tur)
+        // tur = "zorunlu" veya "istege_bagli"
+    ]
+
+    parca_stogu ← [
+        (ad, renk, boyut, miktar_mevcut)
+    ]
+
+DEĞİŞKENLER:
+    eksik_parcalar ← boş liste
+    tamamlanabilir_parcalar ← boş liste
+    insaat_adimlari ← boş liste
+    adim_no ← 1
+
+
+1. PARÇA EŞLEŞMESİ VE DOĞRULUK KONTROLÜ:
+
+    Her parça için parca_listesi içinde tekrar et:
+        (ad, renk, boyut, miktar_gerekli, oncelik, tur) ← parça
+
+        stokta_var_mi ← FALSE
+
+        Her stok_parca için parca_stogu içinde:
+            Eğer stok_parca.ad = ad ve stok_parca.renk = renk ve stok_parca.boyut = boyut:
+                stokta_var_mi ← TRUE
+
+                Eğer stok_parca.miktar_mevcut >= miktar_gerekli:
+                    tamamlanabilir_parcalar listesine bu parçayı ekle
+                Aksi halde:
+                    eksik_miktar ← miktar_gerekli - stok_parca.miktar_mevcut
+                    eksik_parcalar listesine (ad, renk, boyut, eksik_miktar, tur) ekle
+
+        Eğer stokta_var_mi = FALSE:
+            eksik_parcalar listesine (ad, renk, boyut, miktar_gerekli, tur) ekle
+
+
+2. KONTROL: ZORUNLU PARÇALAR TAM MI?
+
+    zorunlu_eksikler ← [parca for parca in eksik_parcalar if parca.tur = "zorunlu"]
+
+    Eğer uzunluk(zorunlu_eksikler) > 0 ise:
+        yazdır("❌ Yapım başlatılamıyor: Eksik zorunlu parçalar mevcut.")
+        Her eksik için zorunlu_eksikler:
+            yazdır("  -", eksik.ad, "(", eksik.renk, ",", eksik.boyut, ") →", eksik.eksik_miktar, " adet eksik")
+        SONLANDIR
+
+
+3. YAPILABİLİR PARÇALARI SIRALA:
+
+    yapı_parcalari ← tamamlanabilir_parcalar
+
+    yapı_parcalari'ni sırala:
+        Önce `tur`: zorunlu > istege_bagli
+        Sonra `oncelik`: küçükten büyüğe (1 en yüksek öncelik)
+
+
+4. İNŞAAT ADIMLARINI OLUŞTUR:
+
+    Her parça için yapı_parcalari:
+        (ad, renk, boyut, miktar, oncelik, tur) ← parça
+
+        Her i için 1..miktar:
+            metin ← "Adım " + adim_no + ": Yerleştir → " + ad + " (" + renk + ", " + boyut + ") [" + tur + "]"
+            insaat_adimlari listesine metin ekle
+            adim_no ← adim_no + 1
+
+
+5. RAPORLAMA:
+
+    yazdır("✅ Lego Yapım Planı oluşturuldu:")
+    yazdır("------------------------------------------")
+
+    Her adım için insaat_adimlari:
+        yazdır(adım)
+
+    yazdır("------------------------------------------")
+    yazdır("📦 Toplam Adım Sayısı:", uzunluk(insaat_adimlari))
+    yazdır("🧱 Kullanılan Parça Türü:", uzunluk(yapı_parcalari))
+
+    Eğer eksik_parcalar içinde "istege_bagli" varsa:
+        yazdır("⚠️ Eksik isteğe bağlı parçalar:")
+        Her eksik için eksik_parcalar:
+            Eğer eksik.tur = "istege_bagli":
+                yazdır("  -", eksik.ad, "(", eksik.renk, ",", eksik.boyut, ") →", eksik.eksik_miktar, " adet")
+
+
+SON
