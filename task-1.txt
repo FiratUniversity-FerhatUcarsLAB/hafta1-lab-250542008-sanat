@@ -3,7 +3,7 @@ AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
 
-Algoritma Seçimi:Optimum Bu ̈t ̧celi market alı ̧sveri ̧si algoritması
+Algoritma Seçimi:Optimum Bütçeli market alışverişi algoritması
 
 ALGORITMA OptimumMarketAlisverisi
 
