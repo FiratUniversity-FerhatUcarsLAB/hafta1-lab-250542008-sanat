@@ -1,4 +1,59 @@
-Öğrenci No:
-AD-SOYAD:
+Öğrenci No:250542008
+AD-SOYAD:MUSTAFA ŞAHİNGÖZ
 
 Lütfen seçtiğiniz algoritmaya ait çözümü ve diğer isterleri aşağıya ekleyiniz:
+
+Algoritma Seçimi:Optimum Bu ̈t ̧celi market alı ̧sveri ̧si algoritması
+
+ALGORITMA OptimumMarketAlisverisi
+
+GİRİŞ:
+    bütçe ← kullanıcıdan_al("Bütçenizi girin: ")
+    ihtiyaç_listesi ← kullanıcıdan_al("İhtiyaç listenizi girin (ürün, öncelik, miktar): ")
+    ürün_veritabanı ← ürünleri_al_veritabanından() // Her ürünün tüm varyantları (fiyat, kalite)
+
+İŞLEM:
+
+1. ihtiyaç_listesini ÖNCELİK'e göre sırala (yüksek öncelikli ürünler önce)
+
+2. satın_alınanlar ← boş liste
+
+3. her ürün için ihtiyaç_listesinde tekrar et:
+    ürün_adı ← ürün.adı
+    miktar    ← ürün.miktar
+    öncelik   ← ürün.öncelik
+
+    mevcut_seçenekler ← ürün_veritabanı[ürün_adı]
+
+    // En ucuzdan pahalıya sırala (fiyat performans hesabı da yapılabilir)
+    mevcut_seçenekler ← sırala(mevcut_seçenekler, fiyat)
+
+    ürün_alındı ← False
+
+    // Uygun ürünü bulmak için mevcut seçeneklerde dolaş
+    her varyant için mevcut_seçenekler içinde tekrar et:
+        toplam_fiyat ← varyant.fiyat * miktar
+
+        eğer toplam_fiyat ≤ bütçe ise:
+            satın_al(satın_alınanlar, ürün_adı, varyant, miktar)
+            bütçe ← bütçe - toplam_fiyat
+            ürün_alındı ← True
+            döngüden_çık
+
+    eğer ürün_alındı = False ise:
+        // Alternatif strateji: miktarı azaltarak dene
+        miktar ← miktar - 1
+        eğer miktar > 0 ise:
+            işlemi tekrarla bu ürün için (geri git adım 3’e)
+
+        değilse:
+            ürünü satın alma, listeye ekleme
+
+4. Satın alma işlemleri tamamlandığında:
+
+ÇIKIŞ:
+    "Satın alınan ürünler:"
+    yazdır(satın_alınanlar)
+    "Kalan bütçe:", bütçe
+
+SON
